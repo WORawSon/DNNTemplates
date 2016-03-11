@@ -22,7 +22,7 @@
             </div>
             <div class="dnnFormItem">
                 <div><label for="itemUser">[Resx:{key:"lblAssignedUser"}]</label></div>
-                <select data-bind="options: userList,
+                <select id="itemUser" data-bind="options: userList,
                                     optionsText: 'name',
                                     optionsValue: 'id',
                                     value: assignedUser,
@@ -41,7 +41,7 @@
 
             var localizedSettings = {};
 
-            var viewmodel = new $safeprojectname$.itemViewModel(moduleId, localizedSettings);
+            var viewmodel = new $safeprojectname$.ItemViewModel(moduleId, localizedSettings);
             viewmodel.init();
 
             ko.applyBindings(viewmodel, $("#Item-" + moduleId)[0]);
