@@ -1,6 +1,6 @@
 ﻿var $safeprojectname$ = $safeprojectname$ || {};
 
-$safeprojectname$.itemListViewModel = function (moduleId, resx) {
+$safeprojectname$.ItemListViewModel = function(moduleId, resx) {
     var service = {
         path: "$safeprojectname$",
         framework: $.ServicesFramework(moduleId)
@@ -9,21 +9,17 @@ $safeprojectname$.itemListViewModel = function (moduleId, resx) {
 
     var isLoading = ko.observable(false);
     var itemList = ko.observableArray([]);
-    var editMode = ko.computed(function () {
+    var editMode = ko.computed(function() {
         return itemList().length > 0 && itemList()[0].editUrl().length > 0;
     });
 
-    var init = function () {
-        getItemList();
-    }
-
-    var getItemList = function () {
+    var getItemList = function() {
         isLoading(true);
         var jqXHR = $.ajax({
             url: service.baseUrl,
             beforeSend: service.framework.setModuleHeaders,
             dataType: "json"
-        }).done(function (data) {
+        }).done(function(data) {
             if (data) {
                 load(data);
             }
@@ -31,30 +27,34 @@ $safeprojectname$.itemListViewModel = function (moduleId, resx) {
                 // No data to load 
                 itemList.removeAll();
             }
-        }).always(function (data) {
+        }).always(function(data) {
             isLoading(false);
         });
     };
 
-    var deleteItem = function (item) {
+    var init = function() {
+        getItemList();
+    }
+
+    var deleteItem = function(item) {
         isLoading(true);
         var restUrl = service.baseUrl + item.id();
         var jqXHR = $.ajax({
             method: "DELETE",
             url: restUrl,
             beforeSend: service.framework.setModuleHeaders
-        }).done(function () {
+        }).done(function() {
             console.log("Deleted: " + item.id());
             itemList.remove(item);
-        }).fail(function () {
+        }).fail(function() {
             console.log("Error");
-        }).always(function (data) {
+        }).always(function(data) {
             console.log("finished");
             isLoading(false);
         });
     }
 
-    var load = function (data) {
+    var load = function(data) {
         itemList.removeAll();
         var underlyingArray = itemList();
         for (var i = 0; i < data.length; i++) {
@@ -77,15 +77,15 @@ $safeprojectname$.itemListViewModel = function (moduleId, resx) {
     }
 };
 
-$safeprojectname$.itemViewModel = function () {
-    var id = ko.observable('');
-    var name = ko.observable('');
-    var description = ko.observable('');
+$safeprojectname$.ItemViewModel = function() {
+    var id = ko.observable("");
+    var name = ko.observable("");
+    var description = ko.observable("");
     var assignedUser = ko.observable(-1);
-    var editUrl = ko.observable('');
+    var editUrl = ko.observable("");
 
-    var load = function (data) {
-        id(data.id)
+    var load = function(data) {
+        id(data.id);
         name(data.name);
         assignedUser(data.assignedUserId);
         description(data.description);
